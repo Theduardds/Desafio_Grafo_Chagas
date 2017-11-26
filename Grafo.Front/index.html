@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="Grafo">
+<head>
+    <title></title>
+
+    <!--css-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="assets/css/vis.css" rel="stylesheet" />
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="assets/css/angular-toastr.css" rel="stylesheet" />
+
+    <!--libs-->
+    <script src="assets/lib/angular.min.js"></script>
+    <script src="assets/lib/angular-route.min.js"></script>
+    <script src="assets/lib/jquery-1.9.1.min.js"></script>
+    <script src="assets/lib/bootstrap.min.js"></script>
+    <script src="assets/lib/ui-bootstrap.min.js"></script>
+    <script src="assets/lib/angular-toastr.js"></script>
+
+    <!--app-->
+    <script src="app/app.module.js"></script>
+    <script src="app/app.configService.js"></script>
+    <script src="app/app.routes.js"></script>
+
+    <!--MODULOS-->
+    <script src="app/grafo/grafoCtrl.js"></script>
+    
+    <!--SERVICE-->
+    <script src="app/grafo/grafoService.js"></script>
+</head>
+<body style="background-color:#f3f2f2; height:50px;">
+    <div ng-include src="'/app/navegacao/navegacaoPadrao.html'"></div>
+
+    <div class="container-fluid" ng-view></div>
+    
+        <script src="assets/lib/vis.js"></script>
+        <generic-exception></generic-exception>
+</body>
+
+</html>

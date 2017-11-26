@@ -1,0 +1,154 @@
+﻿<div class="container" style="width:100% !important">
+    <div class="col-md-12 panel panel-default">
+        <div class="panel-body">
+            <div class="page-header">
+                <div>
+                    <h2>Grafo
+                        <div class="pull-right ">
+                            <button type="button" class="btn btn-default" ng-click="limparEscopo();" data-target="#modalBuscarNo" data-toggle="modal"><i class="fa fa-search"></i> <b>Pesquisar</b></button>
+                            <button type="button" class="btn btn-primary" ng-click="limparEscopo();" data-target="#modalAdicionarNo" data-toggle="modal"><i class="fa fa-plus-circle"></i> <b>Adicionar nó</b></button>
+                            <button type="button" class="btn btn-success" ng-click="limparEscopo();" data-target="#modalAdicionarAresta" data-toggle="modal"><i class="fa fa-plus-circle"></i> <b>Adicionar aresta</b></button>
+                            <button type="button" class="btn btn-danger" ng-show="clickedNode.length==1" ng-click="removerNo();"><i class="fa fa-times-circle-o "></i> <b>Excluir nó</b></button>
+                            <button type="button" class="btn btn-danger" ng-show="clickedEdge.length==1" ng-click="removerAresta();"><i class="fa fa-times-circle-o "></i> <b>Excluir aresta</b></button>
+                        </div>
+                    </h2>
+
+                </div>
+            </div>
+            <div style="height: 600px; border: 1px solid #eee;" id="mynetwork"></div>
+        </div>
+    </div>
+</div>
+
+<!----Modal Adicionar Nó-->
+
+<div id="modalAdicionarNo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4><b>Adicionar nó</b></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <b>Tipos de nó</b>
+                    <select class="form-control" ng-model="No.TipoAtivo" ng-options="tipos.Id as tipos.Tipo for tipos in tipos track by tipos.Id" ng-change="limparAdicionar()" required />
+                    <option value="">Selecione</option>
+                    </select>
+                </div>
+
+                <div class="form-group" ng-if="No.TipoAtivo==1">
+                    <b>Nome do ApplicationServer</b>
+                    <input type="text" id="nome" name="nome" class="form-control" ng-model="No.ApplicationServer.Nome" required />
+                    <br />
+                    <b>Ip do ApplicationServer</b>
+                    <input type="text" id="ip" name="ip" class="form-control" ng-model="No.ApplicationServer.Ip" required />
+                </div>
+                <div class="form-group" ng-if="No.TipoAtivo==2">
+                    <b>Nome do Component</b>
+                    <input type="text" id="nome" name="nome" class="form-control" ng-model="No.Component.Nome" required />
+                    <br />
+                    <b>Ip do Component</b>
+                    <input type="text" id="ip" name="ip" class="form-control" ng-model="No.Component.Ip" required />
+                </div>
+
+                <div class="form-group" ng-if="No.TipoAtivo==3" >
+                    <b>Nome do DatabaseServer</b>
+                    <input type="text" id="nome" name="nome" class="form-control" ng-model="No.DatabaseServer.Nome" required />
+                    <br />
+                    <b>Ip do DatabaseServer</b>
+                    <input type="text" id="ip" name="ip" class="form-control" ng-model="No.DatabaseServer.Ip" required />
+                </div>
+
+                <div class="form-group" ng-if="No.TipoAtivo==4" >
+                    <b>Nome do Proxy</b>
+                    <input type="text" id="nome" name="nome" class="form-control" ng-model="No.Proxy.Nome" required />
+                    <br />
+                    <b>Ip do Proxy</b>
+                    <input type="text" id="ip" name="ip" class="form-control" ng-model="No.Proxy.Ip" required />
+                </div>
+
+                <div class="form-group" ng-if="No.TipoAtivo==5">
+                    <b>Usuário do User</b>
+                    <input type="text" id="nome" name="nome" class="form-control" ng-model="No.User.Usuario" required />
+                    <br />
+                    <b>Senha do User</b>
+                    <input type="text" id="nome" name="nome" class="form-control" ng-model="No.User.Senha" required />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" ng-click="limparEscopo()" aria-hidden="true">Fechar</button>
+                <button type="button" id="btnAdicionar" ng-click="adicionarNo(No);" ng-disabled="!No.TipoAtivo || (!No.ApplicationServer.Nome || !No.ApplicationServer.Ip) && (!No.Component.Nome || !No.Component.Ip) && (!No.DatabaseServer.Nome || !No.DatabaseServer.Ip) && (!No.Proxy.Nome || !No.Proxy.Ip) && (!No.User.Usuario || !No.User.Senha)" class="btn btn-primary" autocomplete="off">
+                    Adicionar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!----Modal Adicionar Aresta-->
+
+<div id="modalAdicionarAresta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4><b>Adicionar aresta</b></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <b>Nó (Origem)</b>
+                    <select class="form-control" ng-model="Aresta.Origem" ng-options="vertices.Id as vertices.Nome for vertices in vertices track by vertices.Id" required />
+                    <option value="">Selecione</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <b>Nó (Destino)</b>
+                    <select class="form-control" ng-model="Aresta.Destino" ng-options="vertices.Id as vertices.Nome for vertices in vertices track by vertices.Id" required />
+                    <option value="">Selecione</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" ng-click="limparEscopo()" aria-hidden="true">Fechar</button>
+                <button type="button" id="btnAdicionar" ng-click="adicionarAresta(Aresta);" ng-disabled="!Aresta.Origem || !Aresta.Destino" class="btn btn-success" autocomplete="off">
+                    Adicionar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!----Modal Buscar No-->
+
+<div id="modalBuscarNo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4><b>Buscar nó</b></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <select class="form-control" ng-model="No.Id" ng-options="vertices.Id as vertices.Nome for vertices in vertices track by vertices.Id" required />
+                    <option value="">Selecione</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" ng-click="limparEscopo()" aria-hidden="true">Fechar</button>
+                <button type="button" id="btnAdicionar" ng-click="buscarNo(No);" ng-disabled="!No" class="btn btn-primary" autocomplete="off">
+                    Buscar
+                </button>
+            </div>
+            <div ng-show="mostrarGrafoBuscar" style="height: 150px; border: 1px solid #eee;" id="mynetwork2"></div>
+        </div>
+    </div>
+</div>

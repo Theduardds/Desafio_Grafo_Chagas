@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Grafo.Api\Grafo.Api.csproj" />
+    <ProjectReference Include="..\Grafo.Domain\Grafo.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
